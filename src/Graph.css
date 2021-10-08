@@ -1,3 +1,9 @@
 .bar-graph {
    height: 300px;
 }
+
+
+.aggregate-button {
+  margin-bottom: 20px;
+  margin-left: 10px;
+}

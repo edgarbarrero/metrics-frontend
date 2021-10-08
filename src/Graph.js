@@ -1,6 +1,7 @@
 import './Graph.css';
 import { Bar } from 'react-chartjs-2';
 import React from 'react';
+import MetricForm from './MetricForm';
 
 class Graph extends React.Component {
   constructor(props) {
@@ -8,6 +9,7 @@ class Graph extends React.Component {
     this.state = {
       labels: [],
       dataset: [],
+      group_by: ''
     };
   }
 
@@ -39,20 +41,13 @@ class Graph extends React.Component {
       (result) => {
         this.setState({
           labels: Object.keys(result),
-          dataset: Object.values(result)
+          dataset: Object.values(result),
+          group_by: group_by,
         });
-        console.log(this.labels);
       },
-      // Nota: es importante manejar errores aquí y no en
-      // un bloque catch() para que no interceptemos errores
-      // de errores reales en los componentes.
       (error) => {
         console.log("error reponse");
         console.log(error);
-        // this.setState({
-        //   isLoaded: true,
-        //   error
-        // });
       }
     )
   }
@@ -70,34 +65,17 @@ class Graph extends React.Component {
           Per minute
         </button>
         <div className='bar-graph'>
-          <Bar data={this.data()} options={options} />
+          <Bar data={this.data()} options={options}/>
         </div>
+        <MetricForm requestData={() => this.requestData(this.state.group_by)}/>
       </div>
     );
   }
 }
 
-// const data = {
-//   labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
-//   datasets: [
-//     {
-//       label: 'value',
-//       data: [12, 19, 3, 5, 2, 3],
-//       backgroundColor: [
-//         'rgba(255, 99, 132, 0.2)',
-//       ],
-//       borderColor: [
-//         'rgba(255, 99, 132, 1)',
-//       ],
-//       borderWidth: 1,
-//     },
-//   ],
-// };
 
 const options = {
   indexAxis: 'x',
-  // Elements options apply to all of the options unless overridden in a dataset
-  // In this case, we are setting the border of each horizontal bar to be 2px wide
   elements: {
     bar: {
       borderWidth: 2,
